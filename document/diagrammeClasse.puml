@@ -1,45 +1,73 @@
 @startuml
+package Modele {
+    class User {
+     name : String
+     score : int
+     serverurUtilisateur : Server
+     creerContenue() : Contenu
+    }
 
-class User {
- name : String
- score : int
- serverurUtilisateur : Server
- creerContenue() : Contenu
+    abstract class Manche {
+        centenu : Contenu
+        pointMax : int
+        tickDepart : long
+        calculerPoint(tick long)
+        start() : Map<User,Int>
+    }
+
+    interface Contenu {
+        proprietaire : User
+        lecture()
+    }
+
+    class ContenuImage {
+        image : Image
+    }
+
+    class ContenuVideo {
+        video : Video
+    }
+
+    abstract class Partie {
+        joueurs : List<User>
+        ListeManches : List<Manche>
+        ajouterJoueur(j :User)
+        supprimerJoueur(j :User))
+        creerManches()
+        start() : List<User,int>
+    }
 }
 
-abstract class Manche {
-    centenu : Contenu
-    pointMax : int
-    tickDepart : long
-    calculerPoint(tick long)
-    start() : Map<User,Int>
+package communication{
+    package serveur {
+        class Client {
+        - Socket socket
+        - PrintWriter out
+        - BufferedReader in
+        - Thread listener
+        + void send(Message)
+        }
+
+
+        class Server {
+        - {static} Server singleton
+        - ServerSocket serverSocket
+        - Thread clientSearch
+        + Server getServer()
+        }
+        Server "1" ..> "*" Client : socketList
 }
+class Message {
++ String type
++ String contenu
++ JSONObject getJson()
++ {static} Message fromJson(String)
+    }
 
-interface Contenu {
-    proprietaire : User
-    lecture()
+    package client {
+        class Client
+    }
 }
-
-class ContenuImage {
-    image : Image
-}
-
-class ContenuVideo {
-    video : Video
-}
-
-abstract class Partie {
-    joueurs : List<User>
-    ListeManches : List<Manche>
-    ajouterJoueur(j :User)
-    supprimerJoueur(j :User))
-    creerManches()
-    start() : List<User,int>
-}
-
-class Client
-
-class Server
 
 ContenuImage ..|> Contenu
 ContenuVideo ..|> Contenu

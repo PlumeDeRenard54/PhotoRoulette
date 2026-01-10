@@ -1,0 +1,107 @@
+package com.example.photoroulette.Modele.Client;
+
+import com.example.photoroulette.Modele.Message;
+
+import org.json.JSONException;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+/**
+ * CLient coté client
+ */
+public class Client {
+
+    /**
+     * Nom/ip du server
+     */
+    private static String host = "127.0.0.1";
+
+    /**
+     * Instance du Clie t
+     */
+    private static Client singleton ;
+
+    /**
+     * Socket client
+     */
+    private Socket socket;
+
+    /**
+     * Sortie de données
+     */
+    private final PrintWriter out;
+
+    /**
+     * Entree de données
+     */
+    private final BufferedReader in;
+
+    /**
+     * Ecoute des messages
+     */
+    private final Thread listener;
+
+    /**
+     * COnstructeur
+     */
+    private Client() {
+        try {
+            this.socket = new Socket(host, 45600);
+            this.out = new PrintWriter(socket.getOutputStream(), true);
+            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            this.listener = new Thread(()->{
+                while (true){
+                    Message message;
+                    try {
+                        message = Message.fromJson(this.in.readLine());
+
+                        switch (message.type){
+                            //Traitement des messages
+                            //TODO
+                        }
+                    } catch (JSONException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            this.listener.start();
+
+        }catch (IOException e){
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * Setting du host
+     * @param host nom de domaine/ip du server
+     */
+    public void setHost(String host){
+        Client.host = host;
+    }
+
+    /**
+     * Renvoie l'instance du client
+     * @return instance
+     */
+    public static Client getInstance(){
+        if (singleton == null){
+            singleton = new Client();
+        }
+        return singleton;
+    }
+
+    /**
+     * Envoi de message au client
+     * @param message message a transmettre
+     */
+    public void send(Message message){
+        out.println(message.getJson());
+        out.flush();
+    }
+
+}

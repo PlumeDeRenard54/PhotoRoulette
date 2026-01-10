@@ -1,6 +1,5 @@
-package com.example.photoroulette
+/*package com.example.photoroulette.Vue
 
-import android.net.nsd.NsdManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,8 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
-import androidx.compose.ui.util.packInts
-import com.example.photoroulette.ui.theme.PhotoRouletteTheme
+import com.example.photoroulette.Vue.theme.PhotoRouletteTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -168,4 +166,4 @@ fun GreetingPreview() {
     PhotoRouletteTheme {
 
     }
-}
+}*/

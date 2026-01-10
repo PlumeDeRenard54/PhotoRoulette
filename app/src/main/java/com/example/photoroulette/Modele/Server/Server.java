@@ -1,4 +1,4 @@
-package com.example.photoroulette.Server;
+package com.example.photoroulette.Modele.Server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -23,7 +23,7 @@ public class Server {
     private Thread clientSearch;
 
     private Server() throws IOException {
-        this.serverSocket = new ServerSocket();
+        this.serverSocket = new ServerSocket(45600);
         this.socketList = new ArrayList<>();
 
         //Thread de recherche de client

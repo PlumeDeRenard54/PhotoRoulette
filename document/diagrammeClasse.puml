@@ -1,4 +1,5 @@
 @startuml
+package java {
 package Modele {
     class User {
      name : String
@@ -68,7 +69,10 @@ class Message {
         class Client
     }
 }
-
+}
+package kotlin{
+    package vue {}
+}
 ContenuImage ..|> Contenu
 ContenuVideo ..|> Contenu
 Manche --> Contenu

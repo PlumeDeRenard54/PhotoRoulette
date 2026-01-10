@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class ServerObsolete {
 
     public static final String TAG = "NsdPhotoRoulette";
     public static final String SERVICE_TYPE = "_photoroulette._tcp";
 
-    private static Server instance;
+    private static ServerObsolete instance;
 
     private final NsdManager nsdManager;
     private ServerSocket serverSocket;
@@ -25,7 +25,7 @@ public class Server {
     private NsdManager.DiscoveryListener discoveryListener;
     private NsdManager.ResolveListener resolveListener;
 
-    private Server(Context context) {
+    private ServerObsolete(Context context) {
         this.nsdManager = (NsdManager) context.getSystemService(Context.NSD_SERVICE);
         try {
             // Initialize a server socket on a free port.
@@ -42,9 +42,9 @@ public class Server {
         initializeListeners();
     }
 
-    public static synchronized Server getInstance(Context context) {
+    public static synchronized ServerObsolete getInstance(Context context) {
         if (instance == null) {
-            instance = new Server(context.getApplicationContext());
+            instance = new ServerObsolete(context.getApplicationContext());
         }
         return instance;
     }

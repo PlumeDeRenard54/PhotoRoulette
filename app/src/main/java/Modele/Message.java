@@ -1,4 +1,4 @@
-package com.example.photoroulette.Modele;
+package Modele;
 
 import org.json.JSONException;
 import org.json.JSONObject;

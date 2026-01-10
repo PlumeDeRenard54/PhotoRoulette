@@ -1,6 +1,6 @@
-package com.example.photoroulette.Modele.Server;
+package Modele.Server;
 
-import com.example.photoroulette.Modele.Message;
+import Modele.Message;
 
 import org.json.JSONException;
 

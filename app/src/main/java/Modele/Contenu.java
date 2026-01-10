@@ -1,4 +1,4 @@
-package modele;
+package Modele;
 
 public interface Contenu {
     public void lecture();

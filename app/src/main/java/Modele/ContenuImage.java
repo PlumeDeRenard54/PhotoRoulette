@@ -1,9 +1,8 @@
-package modele;
+package Modele;
 
 import android.provider.MediaStore;
 
-public class ContenuVideo implements Contenu{
-
+public class ContenuImage implements Contenu {
     User proprietaire;
     MediaStore.Video video;
 
@@ -11,5 +10,5 @@ public class ContenuVideo implements Contenu{
         this.proprietaire = p;
     }
 
-    public void lecture(){}
+    public void lecture() {}
 }

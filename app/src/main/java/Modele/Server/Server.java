@@ -1,4 +1,4 @@
-package com.example.photoroulette.Modele.Server;
+package Modele.Server;
 
 import java.io.IOException;
 import java.net.ServerSocket;

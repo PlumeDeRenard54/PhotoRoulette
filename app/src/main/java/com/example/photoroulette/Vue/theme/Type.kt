@@ -1,4 +1,4 @@
-package com.example.photoroulette.ui.theme
+package com.example.photoroulette.Vue.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

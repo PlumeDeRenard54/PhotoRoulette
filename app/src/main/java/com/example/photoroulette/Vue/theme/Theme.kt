@@ -1,6 +1,5 @@
-package com.example.photoroulette.ui.theme
+package com.example.photoroulette.Vue.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

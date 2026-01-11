@@ -1,0 +1,27 @@
+@startuml
+autonumber
+
+== Connexion et Salon ==
+Joueur -> Serveur : RejoindrePartie(Nom, CodePartie)
+Serveur -> Joueur : Confirmé (Liste des joueurs actuels)
+
+== Phase de Préparation (Upload) ==
+Note over Joueur : Compression de l'image
+Joueur -> Serveur : UploadPhotos(Fichiers binaires)
+Serveur -> Serveur : Stockage temporaire (Disque)
+Serveur -> Tous : Notification "Joueur X est prêt"
+
+== Boucle de Jeu (Optimisée) ==
+loop nombre de manches
+    Serveur -> Tous : NouvelleManche(ID_Photo_Suivante, Timer)
+    Tous -> Serveur : GET /photo/{id} (Téléchargement ciblé)
+    ... Temps de réflexion ...
+    Joueur -> Serveur : EnvoyerAction(Choix/Clic)
+    Serveur -> Serveur : Calcul des scores (Arbitrage)
+    Serveur -> Tous : UpdateScores(Tableau de bord)
+end
+
+== Fin ==
+Serveur -> Tous : RésultatFinal(Gagnant)
+Serveur -> Serveur : Nettoyage des photos sur le disque
+@enduml

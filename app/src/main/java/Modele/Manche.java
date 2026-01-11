@@ -2,7 +2,10 @@ package Modele;
 
 import android.provider.MediaStore;
 
-public class Manche {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Manche implements SeriJSon{
     Contenu contenu;
     User proprietaire;
     int pointMax;
@@ -37,5 +40,21 @@ public class Manche {
         if (contenu != null) {
             contenu.supprimer();
         }
+    }
+
+    /**
+     * Methode de serialisation Json
+     *
+     * @return Objet Json
+     */
+    @Override
+    public JSONObject toJson() {
+        try {
+            return new JSONObject()
+                    .put("contenu", contenu.toJson())
+                    .put("proprietaire", proprietaire.toJson())
+                    .put("pointMax", pointMax)
+                    .put("tickeDepart", tickDepart);
+        }catch (JSONException e){throw new RuntimeException(e);}
     }
 }

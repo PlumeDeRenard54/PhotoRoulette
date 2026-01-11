@@ -7,5 +7,7 @@ public enum MessageTypes {
     askRooms,
     join,
     roomList,
-    image
+    image,
+    setName,
+    roomData
 }

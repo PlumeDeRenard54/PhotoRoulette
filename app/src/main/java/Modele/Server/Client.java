@@ -21,6 +21,8 @@ public class Client {
      */
     private final Socket socket;
 
+    private String nom;
+
     /**
      * Sortie d'ecriture vers le client
      */
@@ -77,6 +79,9 @@ public class Client {
                              send(new Message(MessageTypes.roomList,roomList.toString()));
                              break;
 
+                         //Setting du nom
+                         case setName:
+                             this.nom = message.contenu;
                      }
                 } catch (JSONException | IOException e) {
                     throw new RuntimeException(e);
@@ -103,5 +108,15 @@ public class Client {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 }

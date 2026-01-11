@@ -1,6 +1,8 @@
 package Modele.Client;
 
 import Modele.Message;
+import Modele.Partie;
+import Modele.User;
 
 import org.json.JSONException;
 
@@ -46,6 +48,11 @@ public class Client {
     private final Thread listener;
 
     /**
+     * Partie jouée en ce moment
+     */
+    Partie partie = null;
+
+    /**
      * COnstructeur
      */
     private Client() {
@@ -65,6 +72,9 @@ public class Client {
                             case roomList:
                                 //TODO Affichage de la liste des rooms
 
+                            //Un joueur rejoint la game
+                            case join:
+                                partie.ajouterJoueur(new User(message.contenu));
                         }
                     } catch (JSONException | IOException e) {
                         throw new RuntimeException(e);

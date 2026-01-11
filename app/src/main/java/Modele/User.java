@@ -1,19 +1,34 @@
 package Modele;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import Modele.Server.Server;
 
-public class User {
+public class User implements SeriJSon{
     String name;
     int score;
-    Server serveurUtilisateur;
+
 
     public User(String name){
         this.name = name;
         this.score = 0;
-        serveurUtilisateur = null;
     }
 
-    public Contenu creerContenu() {
-        return null;
+
+    /**
+     * Methode de serialisation Json
+     *
+     * @return Objet Json
+     */
+    @Override
+    public JSONObject toJson() {
+        try {
+            return new JSONObject()
+                    .put("name", name)
+                    .put("score", score);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

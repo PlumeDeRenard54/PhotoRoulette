@@ -13,6 +13,28 @@ public class Partie implements SeriJSon{
 
     int nbManches = 10 ;
 
+    public static Partie fromJson(JSONObject jsonObject){
+        try {
+            Partie partie = new Partie();
+            partie.joueurs = new ArrayList<>();
+            partie.listeManche = new ArrayList<>();
+
+            JSONArray joueurs = jsonObject.getJSONArray("joueurs");
+            for (int i = 0; i < joueurs.length(); i++) {
+                partie.joueurs.add(User.fromJson(joueurs.getJSONObject(i)));
+            }
+
+            JSONArray manches = jsonObject.getJSONArray("manches");
+            for (int i = 0; i < manches.length(); i++) {
+                partie.listeManche.add(Manche.fromJson(manches.getJSONObject(i)));
+            }
+
+            partie.nbManches = jsonObject.getInt("nbManches");
+
+            return partie;
+        }catch (JSONException e){throw new RuntimeException(e);}
+    }
+
     public JSONObject toJson(){
         try {
 
@@ -28,7 +50,8 @@ public class Partie implements SeriJSon{
 
             return new JSONObject()
                     .put("joueurs", j)
-                    .put("manches", m);
+                    .put("manches", m)
+                    .put("nbManches",nbManches);
         }catch (JSONException e){
             throw new RuntimeException(e);
         }

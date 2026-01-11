@@ -25,7 +25,16 @@ public class ContenuImage implements Contenu {
     public JSONObject toJson() {
         try {
             return new JSONObject()
-                    .put("proprietaire", proprietaire.toJson());
+                    .put("proprietaire", proprietaire.toJson())
+                    .put("type", "image");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Contenu fromJson(JSONObject jsonObject){
+        try {
+            return new ContenuImage(User.fromJson(jsonObject.getJSONObject("proprietaire")),null);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

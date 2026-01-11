@@ -1,5 +1,6 @@
 package Modele;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public interface Contenu {
@@ -9,6 +10,18 @@ public interface Contenu {
     public void supprimer();
 
     JSONObject toJson();
+
+    static Contenu fromJson(JSONObject jsonObject){
+        try {
+            if(jsonObject.getString("type").equals("video")){
+                return ContenuVideo.fromJson(jsonObject);
+            }else{
+                return ContenuImage.fromJson(jsonObject);
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

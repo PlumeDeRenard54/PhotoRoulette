@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream;
 /**
  * Classe d'empaquetement des données pour envoi
  */
-public class Message {
+public class Message implements SeriJSon {
 
     /**
      * Type du message
@@ -80,7 +80,7 @@ public class Message {
      *
      * @return objet Json
      */
-    public JSONObject getJson() {
+    public JSONObject toJson() {
 
         try {
             return new JSONObject()

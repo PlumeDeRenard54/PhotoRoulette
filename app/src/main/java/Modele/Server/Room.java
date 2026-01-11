@@ -1,6 +1,11 @@
 package Modele.Server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import Modele.Message;
+import Modele.MessageTypes;
 
 /**
  * Rooms o`u se trouvent les joueurs
@@ -10,7 +15,7 @@ public class Room {
     /**
      * Liste des joueurs
      */
-    private ArrayList<Client> joueurs = new ArrayList<>();
+    private Map<String,Client> joueurs = new HashMap<>();
 
     /**
      * Si la partie est en cours
@@ -30,7 +35,11 @@ public class Room {
      */
     public boolean join(Client joueur){
         if (!this.enCours && joueurs.size()<nbJoueursMax ){
-            joueurs.add(joueur);
+            //Notification de l'arrivée du joueur
+            broadCast(new Message(MessageTypes.join,joueur.getNom()));
+
+            //Ajout du joueur
+            joueurs.put(joueur.getNom(), joueur);
             joueur.setRoom(this);
             return true;
         }
@@ -40,5 +49,11 @@ public class Room {
 
     public boolean isAvaliable(){
         return (!this.enCours && joueurs.size()<nbJoueursMax );
+    }
+
+    public void broadCast(Message message){
+        for (Client c : joueurs.values()){
+            c.send(message);
+        }
     }
 }

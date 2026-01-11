@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2196F3"
+    android:id="@+id/main"
     android:orientation="vertical">
 
     <TextView
@@ -20,24 +21,24 @@
         android:typeface="normal" />
 
     <EditText
-        android:id="@+id/NameInput"
+        android:id="@+id/entrePseudo"
         style="@android:style/Widget.Material.Light.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:ems="10"
-        android:inputType="text"
-        android:text="Pseudo"
+        android:inputType="textPersonName"
+        android:text="Prénom"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="24sp"/>
 
     <Button
-        android:id="@+id/JoinRoomButton"
+        android:id="@+id/Rejoindre"
         style="@style/Theme.PhotoRoulette"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:background="@drawable/boutonCirculaire"
+        android:background="@drawable/bouton_circulaire"
         android:backgroundTint="@color/white"
         android:text="Rejoindre une partie"
         android:textSize="20sp" />
@@ -52,12 +53,12 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/CreateRoomButton"
+            android:id="@+id/CreerPartie"
             style="@style/Theme.PhotoRoulette"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
-            android:background="@drawable/boutonCirculaire"
+            android:background="@drawable/bouton_circulaire"
             android:backgroundTint="@color/white"
             android:text="Créer une partie"
             android:textSize="20sp" />

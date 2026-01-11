@@ -70,9 +70,6 @@ public class Client {
                         message = Message.fromJson(this.in.readLine());
 
                         switch (message.type){
-                            //Traitement des messages
-                            case roomList:
-                                //TODO Affichage de la liste des rooms
 
                             //Un joueur rejoint la game
                             case join:

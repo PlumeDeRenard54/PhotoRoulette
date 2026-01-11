@@ -76,15 +76,6 @@ public class Client {
                              this.send(new Message(MessageTypes.roomData, this.room.getPartie().toJson().toString()));
                              break;
 
-                         //Demande de la liste de rooms publiques
-                         case askRooms :
-                             StringBuilder roomList = new StringBuilder();
-                             for (String room : Server.getServer().getAvaliableRooms()){
-                                 roomList.append(room).append("/");
-                             }
-                             send(new Message(MessageTypes.roomList,roomList.toString()));
-                             break;
-
                          //Setting du nom
                          case setName:
                              this.nom = message.contenu;

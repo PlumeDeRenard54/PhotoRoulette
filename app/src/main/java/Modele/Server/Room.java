@@ -23,8 +23,6 @@ public class Room {
      */
     private boolean enCours = false;
 
-    private boolean isPublic = false;
-
     /**
      * Nombre maximum de joueurs
      */
@@ -51,14 +49,9 @@ public class Room {
         return false;
     }
 
-    public void togglePublic(){
-        this.isPublic = !this.isPublic;
-    }
     public boolean isAvaliable(){
         return (!this.enCours && joueurs.size()<nbJoueursMax );
     }
-
-    public boolean isPublic(){return isPublic;}
 
     public void broadCast(Message message){
         for (Client c : joueurs.values()){

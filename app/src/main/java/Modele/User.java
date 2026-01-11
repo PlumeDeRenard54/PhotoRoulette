@@ -12,7 +12,7 @@ public class User implements SeriJSon{
      */
     private boolean isLoaded = false;
     private final String name;
-    private int score;
+    int score;
 
     public User(String name,int score){
         this.name = name;

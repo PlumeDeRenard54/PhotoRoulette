@@ -54,6 +54,8 @@ public class Client {
      */
     Partie partie = null;
 
+    private String name;
+
     /**
      * COnstructeur
      */
@@ -79,7 +81,7 @@ public class Client {
                             case roomData:
                                 this.partie = Partie.fromJson(new JSONObject(message.contenu));
 
-                                //Envoi du message pour sotifier que les données sont bien recues
+                                //Envoi du message pour notifier que les données sont bien recues
                                 send(new Message(MessageTypes.loaded,"blblb"));
 
                             //lancement de la partie          ,
@@ -125,6 +127,31 @@ public class Client {
     public void send(Message message){
         out.println(message.toJson());
         out.flush();
+    }
+
+    /**
+     * Envoie l'instruction au server de connecter le client à la room
+     * @param roomName nom /code de la room
+     */
+    public void joinRoom(String roomName){
+        send(new Message(MessageTypes.join,roomName));
+    }
+
+    /**
+     * Envoie une requete au server pour lancer la partie
+     * Si tout le monde a téléchargé les données, la partie se lance
+     */
+    public void launchGame(){
+        send(new Message(MessageTypes.launch,"blblblbl"));
+    }
+
+    /**
+     * Set son nom en local et en network
+     * @param name nom
+     */
+    public void setName(String name){
+        this.name = name;
+        send(new Message(MessageTypes.setName,name));
     }
 
 }

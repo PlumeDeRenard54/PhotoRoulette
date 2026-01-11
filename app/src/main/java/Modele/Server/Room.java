@@ -66,4 +66,6 @@ public class Room {
     public void setPartie(Partie partie) {
         this.partie = partie;
     }
+
+    public void setEnCours(boolean b){this.enCours=b;}
 }

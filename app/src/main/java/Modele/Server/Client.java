@@ -88,7 +88,10 @@ public class Client {
                              }
                              if (isOkay) {
                                  this.room.broadCast(new Message(MessageTypes.launch, "blblblbl"));
+                                 this.room.setEnCours(true);
                              }
+
+                             //TODO Gerer le deroulé de la partie
 
                          case loaded:
                              Objects.requireNonNull(this.room.getPartie().getJoueurs().get(this.nom)).setLoaded(true);

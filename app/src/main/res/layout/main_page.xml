@@ -1,33 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#2196F3"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="162dp"
-        android:fontFamily="casual"
-        android:text="PhotoRoulette"
+        android:layout_height="100dp"
+        android:layout_margin="48dp"
+        android:fontFamily="cursive"
+        android:text="@string/app_name"
         android:textAlignment="center"
-        android:textSize="34sp"
+        android:textColor="#FFFFFF"
+        android:textSize="60sp"
         android:textStyle="bold"
+
         android:typeface="normal" />
 
     <EditText
         android:id="@+id/NameInput"
+        style="@android:style/Widget.Material.Light.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name" />
+        android:text="Pseudo"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"/>
 
     <Button
         android:id="@+id/JoinRoomButton"
+        style="@style/Theme.PhotoRoulette"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_margin="12dp"
+        android:background="@drawable/boutonCirculaire"
+        android:backgroundTint="@color/white"
+        android:text="Rejoindre une partie"
+        android:textSize="20sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -36,5 +49,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/CreateRoomButton"
+            style="@style/Theme.PhotoRoulette"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:background="@drawable/boutonCirculaire"
+            android:backgroundTint="@color/white"
+            android:text="Créer une partie"
+            android:textSize="20sp" />
+    </LinearLayout>
 </LinearLayout>

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import Modele.Message;
 import Modele.MessageTypes;
+import Modele.Partie;
 
 /**
  * Rooms o`u se trouvent les joueurs
@@ -22,13 +23,12 @@ public class Room {
      */
     private boolean enCours = false;
 
-    private boolean isPublic = false;
-
     /**
      * Nombre maximum de joueurs
      */
     private int nbJoueursMax = 10;
 
+    private Partie partie;
 
     /**
      * Methode pour rejoindre la room
@@ -49,18 +49,50 @@ public class Room {
         return false;
     }
 
-    public void togglePublic(){
-        this.isPublic = !this.isPublic;
-    }
     public boolean isAvaliable(){
         return (!this.enCours && joueurs.size()<nbJoueursMax );
     }
 
-    public boolean isPublic(){return isPublic;}
-
+    /**
+     * Envoie un message à tous les joueurs de la room
+     * @param message message à envoyer
+     */
     public void broadCast(Message message){
         for (Client c : joueurs.values()){
             c.send(message);
         }
+    }
+
+    public synchronized void launch(){
+        broadCast(new Message(MessageTypes.launch,"blblblbl"));
+    }
+
+    public synchronized void end(){
+        broadCast(new Message(MessageTypes.end,this.partie.getBest().toJson().toString()));
+    }
+
+
+    public Partie getPartie() {
+        return partie;
+    }
+
+    public void setPartie(Partie partie) {
+        this.partie = partie;
+    }
+
+    public void setEnCours(boolean b){this.enCours=b;}
+
+    public void clearAjoue(){
+        for (Client c : joueurs.values()){
+            c.setAJoue(false);
+        }
+    }
+
+    public boolean tousJoue(){
+        boolean tmp = true;
+        for (Client c : joueurs.values()){
+            tmp = tmp && c.isaJoue();
+        }
+        return tmp;
     }
 }

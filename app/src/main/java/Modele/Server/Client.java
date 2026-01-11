@@ -2,6 +2,7 @@ package Modele.Server;
 
 import Modele.Message;
 import Modele.MessageTypes;
+import Modele.User;
 
 import org.json.JSONException;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Objects;
 
 /**
  * Client d'un point de vue server
@@ -41,8 +43,12 @@ public class Client {
     /**
      * Lecture des données venant du client
      */
-
     private final Thread listener;
+
+    /**
+     * le joueur a il joué à cette manche
+     */
+    private boolean aJoue;
 
     /**
      * Constructeur
@@ -67,21 +73,51 @@ public class Client {
                      switch (message.type){
                          //Message utilisé pour rejoindre une room
                          case join :
-                            this.setRoom(Server.getServer().getRooms().get(message.contenu));
-                            break;
+                             this.room.getPartie().clearLoaded();
+                             Room room1 = Server.getServer().getRooms().get(message.contenu);
+                             assert room1 != null;
+                             room1.broadCast(new Message(MessageTypes.join,this.getNom()));
+                             this.setRoom(room1);
 
-                         //Demande de la liste de rooms
-                         case askRooms :
-                             StringBuilder roomList = new StringBuilder();
-                             for (String room : Server.getServer().getAvaliableRooms()){
-                                 roomList.append(room).append("\n");
-                             }
-                             send(new Message(MessageTypes.roomList,roomList.toString()));
+                             this.send(new Message(MessageTypes.roomData, this.room.getPartie().toJson().toString()));
                              break;
 
                          //Setting du nom
                          case setName:
                              this.nom = message.contenu;
+                             break;
+
+                         //REception d'une demande de lancement
+                         case launch:
+                             //TODO envoi des scores
+                             boolean isOkay = true;
+                             for (User e : this.room.getPartie().getJoueurs().values()){
+                                 isOkay = isOkay && e.isLoaded();
+                             }
+                             if (isOkay) {
+                                 this.room.clearAjoue();
+                                 this.room.launch();
+                                 this.room.setEnCours(true);
+                             }
+                             break;
+
+                         //Notification de fin de download
+                         case loaded:
+                             Objects.requireNonNull(this.room.getPartie().getJoueurs().get(this.nom)).setLoaded(true);
+                             break;
+
+                         //Notification de jeu
+                         case play:
+                              getUser().addScore(Integer.parseInt(message.contenu));
+                              this.aJoue = true;
+                              if (this.room.tousJoue()){
+                                  if (this.room.getPartie().isFin()){
+                                      this.room.end();
+                                  }else {
+                                      this.room.launch();
+                                  }
+                              }
+                              break;
                      }
                 } catch (JSONException | IOException e) {
                     throw new RuntimeException(e);
@@ -101,7 +137,6 @@ public class Client {
         out.flush();
     }
 
-
     public Room getRoom() {
         return room;
     }
@@ -118,5 +153,17 @@ public class Client {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public User getUser(){
+        return this.room.getPartie().getJoueurs().get(this.nom);
+    }
+
+    public void setAJoue(boolean aJoue){
+        this.aJoue = aJoue;
+    }
+
+    public boolean isaJoue() {
+        return aJoue;
     }
 }

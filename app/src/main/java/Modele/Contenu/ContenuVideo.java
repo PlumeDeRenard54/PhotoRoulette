@@ -1,15 +1,15 @@
-package Modele;
+package Modele.Contenu;
 
 import android.provider.MediaStore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import Modele.User;
+
 public class ContenuVideo implements Contenu {
-    User proprietaire;
     MediaStore.Video video;
-    ContenuVideo (User p, MediaStore.Video v) {
-        this.proprietaire = p;
+    public ContenuVideo ( MediaStore.Video v) {
         this.video = v;
     }
 
@@ -20,7 +20,6 @@ public class ContenuVideo implements Contenu {
     public JSONObject toJson() {
         try {
             return new JSONObject()
-                    .put("proprietaire", proprietaire.toJson())
                     .put("type","video");
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -28,10 +27,6 @@ public class ContenuVideo implements Contenu {
     }
 
     public static Contenu fromJson(JSONObject jsonObject){
-        try {
-            return new ContenuImage(User.fromJson(jsonObject.getJSONObject("proprietaire")),null);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+        return new ContenuVideo(null);
     }
 }

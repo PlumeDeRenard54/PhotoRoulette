@@ -1,10 +1,12 @@
 package Modele.Client;
 
 import Modele.Message;
+import Modele.MessageTypes;
 import Modele.Partie;
 import Modele.User;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,6 +54,8 @@ public class Client {
      */
     Partie partie = null;
 
+    private String name;
+
     /**
      * COnstructeur
      */
@@ -68,13 +72,25 @@ public class Client {
                         message = Message.fromJson(this.in.readLine());
 
                         switch (message.type){
-                            //Traitement des messages
-                            case roomList:
-                                //TODO Affichage de la liste des rooms
 
                             //Un joueur rejoint la game
                             case join:
                                 partie.ajouterJoueur(new User(message.contenu));
+
+                            //Recuperation des données de la partie
+                            case roomData:
+                                this.partie = Partie.fromJson(new JSONObject(message.contenu));
+
+                                //Envoi du message pour notifier que les données sont bien recues
+                                send(new Message(MessageTypes.loaded,"blblb"));
+
+                            //lancement de la partie          ,
+                            case launch:
+                                this.partie.start();
+
+                            case end:
+                                //TODO Gestion fin client
+
                         }
                     } catch (JSONException | IOException e) {
                         throw new RuntimeException(e);
@@ -114,6 +130,35 @@ public class Client {
     public void send(Message message){
         out.println(message.toJson());
         out.flush();
+    }
+
+    /**
+     * Envoie l'instruction au server de connecter le client à la room
+     * @param roomName nom /code de la room
+     */
+    public void joinRoom(String roomName){
+        send(new Message(MessageTypes.join,roomName));
+    }
+
+    /**
+     * Envoie une requete au server pour lancer la partie
+     * Si tout le monde a téléchargé les données, la partie se lance
+     */
+    public void launchGame(){
+        send(new Message(MessageTypes.launch,"blblblbl"));
+    }
+
+    /**
+     * Set son nom en local et en network
+     * @param name nom
+     */
+    public void setName(String name){
+        this.name = name;
+        send(new Message(MessageTypes.setName,name));
+    }
+
+    public void play(int nbPoints){
+        send(new Message(MessageTypes.play,nbPoints+""));
     }
 
 }

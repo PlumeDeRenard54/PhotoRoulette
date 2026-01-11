@@ -1,6 +1,7 @@
 package Modele.Server;
 
 import Modele.Message;
+import Modele.MessageTypes;
 
 import org.json.JSONException;
 
@@ -35,7 +36,20 @@ public class Client {
                      message = Message.fromJson(this.in.readLine());
 
                      switch (message.type){
-                         case "join" :
+                         //Message utilisé pour rejoindre une room
+                         case join :
+                            this.setRoom(Server.getServer().getRooms().get(message.contenu));
+                            break;
+
+                         //Demande de la liste de rooms
+                         case askRooms :
+                             StringBuilder roomList = new StringBuilder();
+                             for (String room : Server.getServer().getRooms().keySet()){
+                                 roomList.append(room).append("\n");
+                             }
+                             send(new Message(MessageTypes.roomList,roomList.toString()));
+                             break;
+
 
                          //Traitement des messages
                      }

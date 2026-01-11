@@ -47,7 +47,7 @@ public class Server {
 
     }
 
-    public Server getServer(){
+    public static Server getServer(){
         if (singleton == null){
             try {
                 singleton = new Server();

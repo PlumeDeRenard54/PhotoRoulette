@@ -16,17 +16,17 @@ import java.io.ByteArrayOutputStream;
 
 public class Message {
 
-    public final String type;
+    public final MessageTypes type;
 
     public final String contenu;
 
-    public Message(String type,String contenu){
+    public Message(MessageTypes type,String contenu){
         this.contenu = contenu;
         this.type = type;
     }
 
     public Message(Bitmap image){
-        this.type = "image";
+        this.type = MessageTypes.image;
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         // On compresse l'image pour qu'elle soit moins lourde à envoyer
@@ -52,7 +52,7 @@ public class Message {
 
         try {
             return new JSONObject()
-                    .put("type",type)
+                    .put("type",type.toString())
                     .put("contenu",contenu);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -68,7 +68,7 @@ public class Message {
         if (jsonObject.getString("type").equals("image")){
             return new Message(toBitmap(jsonObject.getString("contenu")));
         }else {
-            return new Message(jsonObject.getString("type"), jsonObject.getString("contenu"));
+            return new Message(jsonObject.getString("type"), MessageTypes.valueOf(jsonObject.getString("contenu")));
         }
     }
 
@@ -79,7 +79,7 @@ public class Message {
         Bitmap bmp = Bitmap.createBitmap(w, h, conf);
 
         String data = "DONNEES";
-        String type = "TYPE";
+        MessageTypes type = MessageTypes.join;
 
         Message message = new Message(data,type);
 

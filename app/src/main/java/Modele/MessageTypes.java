@@ -9,5 +9,7 @@ public enum MessageTypes {
     roomList,
     image,
     setName,
-    roomData
+    roomData,
+    launch,
+    loaded
 }

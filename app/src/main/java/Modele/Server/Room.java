@@ -6,6 +6,7 @@ import java.util.Map;
 
 import Modele.Message;
 import Modele.MessageTypes;
+import Modele.Partie;
 
 /**
  * Rooms o`u se trouvent les joueurs
@@ -29,6 +30,7 @@ public class Room {
      */
     private int nbJoueursMax = 10;
 
+    private Partie partie;
 
     /**
      * Methode pour rejoindre la room
@@ -62,5 +64,13 @@ public class Room {
         for (Client c : joueurs.values()){
             c.send(message);
         }
+    }
+
+    public Partie getPartie() {
+        return partie;
+    }
+
+    public void setPartie(Partie partie) {
+        this.partie = partie;
     }
 }

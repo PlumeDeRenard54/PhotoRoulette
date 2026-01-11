@@ -5,23 +5,27 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Partie implements SeriJSon{
-    ArrayList<User> joueurs;
-    ArrayList<Manche> listeManche;
+    private Map<String,User> joueurs;
+    private ArrayList<Manche> listeManche;
 
     int nbManches = 10 ;
 
     public static Partie fromJson(JSONObject jsonObject){
         try {
             Partie partie = new Partie();
-            partie.joueurs = new ArrayList<>();
+            partie.joueurs = new HashMap<>();
             partie.listeManche = new ArrayList<>();
 
             JSONArray joueurs = jsonObject.getJSONArray("joueurs");
             for (int i = 0; i < joueurs.length(); i++) {
-                partie.joueurs.add(User.fromJson(joueurs.getJSONObject(i)));
+                User u = User.fromJson(joueurs.getJSONObject(i));
+                partie.joueurs.put(u.getName(),u);
             }
 
             JSONArray manches = jsonObject.getJSONArray("manches");
@@ -39,7 +43,7 @@ public class Partie implements SeriJSon{
         try {
 
             JSONArray j = new JSONArray();
-            for (User u : joueurs) {
+            for (User u : joueurs.values()) {
                 j.put(u.toJson());
             }
 
@@ -59,11 +63,11 @@ public class Partie implements SeriJSon{
     }
 
     public void ajouterJoueur(User j){
-        joueurs.add(j);
+        joueurs.put(j.getName(), j);
     }
 
     public void supprimerJoueur(User j){
-        joueurs.remove(j);
+        joueurs.remove(j.getName());
     }
 
     public void creerManches(){
@@ -74,9 +78,17 @@ public class Partie implements SeriJSon{
         }
     }
 
-    void start() {
+    public void start() {
         for(Manche m : listeManche){
             m.start();
         }
+    }
+
+    public Map<String,User> getJoueurs(){return this.joueurs;}
+
+    public void clearLoaded(){
+        this.getJoueurs().values().forEach((e)->{
+            e.setLoaded(false);
+        });
     }
 }

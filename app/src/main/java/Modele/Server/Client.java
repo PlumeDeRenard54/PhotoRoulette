@@ -2,6 +2,7 @@ package Modele.Server;
 
 import Modele.Message;
 import Modele.MessageTypes;
+import Modele.User;
 
 import org.json.JSONException;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Objects;
 
 /**
  * Client d'un point de vue server
@@ -41,7 +43,6 @@ public class Client {
     /**
      * Lecture des données venant du client
      */
-
     private final Thread listener;
 
     /**
@@ -67,14 +68,19 @@ public class Client {
                      switch (message.type){
                          //Message utilisé pour rejoindre une room
                          case join :
-                            this.setRoom(Server.getServer().getRooms().get(message.contenu));
-                            break;
+                             Room room1 = Server.getServer().getRooms().get(message.contenu);
+                             assert room1 != null;
+                             room1.broadCast(new Message(MessageTypes.join,this.getNom()));
+                             this.setRoom(room1);
 
-                         //Demande de la liste de rooms
+                             this.send(new Message(MessageTypes.roomData, this.room.getPartie().toJson().toString()));
+                             break;
+
+                         //Demande de la liste de rooms publiques
                          case askRooms :
                              StringBuilder roomList = new StringBuilder();
                              for (String room : Server.getServer().getAvaliableRooms()){
-                                 roomList.append(room).append("\n");
+                                 roomList.append(room).append("/");
                              }
                              send(new Message(MessageTypes.roomList,roomList.toString()));
                              break;
@@ -82,6 +88,19 @@ public class Client {
                          //Setting du nom
                          case setName:
                              this.nom = message.contenu;
+
+                         //REception d'une demande de lancement
+                         case launch:
+                             boolean isOkay = true;
+                             for (User e : this.room.getPartie().getJoueurs().values()){
+                                 isOkay = isOkay && e.isLoaded();
+                             }
+                             if (isOkay) {
+                                 this.room.broadCast(new Message(MessageTypes.launch, "blblblbl"));
+                             }
+
+                         case loaded:
+                             Objects.requireNonNull(this.room.getPartie().getJoueurs().get(this.nom)).setLoaded(true);
                      }
                 } catch (JSONException | IOException e) {
                     throw new RuntimeException(e);
@@ -100,7 +119,6 @@ public class Client {
         out.println(message.toJson());
         out.flush();
     }
-
 
     public Room getRoom() {
         return room;

@@ -6,8 +6,13 @@ import org.json.JSONObject;
 import Modele.Server.Server;
 
 public class User implements SeriJSon{
-    String name;
-    int score;
+
+    /**
+     * est ce que l'utilisateur a bien fini de load les données
+     */
+    private boolean isLoaded = false;
+    private final String name;
+    private int score;
 
     public User(String name,int score){
         this.name = name;
@@ -42,4 +47,14 @@ public class User implements SeriJSon{
             throw new RuntimeException(e);
         }
     }
+
+    public void setLoaded(boolean loaded) {
+        isLoaded = loaded;
+    }
+
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
+    public String getName(){return name;}
 }

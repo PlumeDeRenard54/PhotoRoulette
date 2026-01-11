@@ -92,7 +92,7 @@ public class Server {
     public List<String> getAvaliableRooms(){
         List<String> list = new ArrayList<>();
         for (var entry : this.getRooms().entrySet()){
-            if (entry.getValue().isAvaliable()){
+            if (entry.getValue().isAvaliable() && entry.getValue().isPublic()){
                 list.add(entry.getKey());
             }
         }

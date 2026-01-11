@@ -154,4 +154,8 @@ public class Client {
         send(new Message(MessageTypes.setName,name));
     }
 
+    public void play(int nbPoints){
+        send(new Message(MessageTypes.play,nbPoints+""));
+    }
+
 }

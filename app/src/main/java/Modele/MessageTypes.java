@@ -9,5 +9,6 @@ public enum MessageTypes {
     setName,
     roomData,
     launch,
-    loaded
+    loaded,
+    play
 }

@@ -1,16 +1,15 @@
-package Modele;
+package Modele.Contenu;
 
 import android.provider.MediaStore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import Modele.User;
+
 public class ContenuImage implements Contenu {
-    //TODO repetition
-    User proprietaire;
-    MediaStore.Images image;
-    ContenuImage(User proprietaire, MediaStore.Images m){
-        this.proprietaire = proprietaire;
+    private MediaStore.Images image;
+    public ContenuImage(MediaStore.Images m){
         image = m;
     }
     public void lecture() {}
@@ -25,7 +24,6 @@ public class ContenuImage implements Contenu {
     public JSONObject toJson() {
         try {
             return new JSONObject()
-                    .put("proprietaire", proprietaire.toJson())
                     .put("type", "image");
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -33,10 +31,6 @@ public class ContenuImage implements Contenu {
     }
 
     public static Contenu fromJson(JSONObject jsonObject){
-        try {
-            return new ContenuImage(User.fromJson(jsonObject.getJSONObject("proprietaire")),null);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+        return new ContenuImage(null);
     }
 }

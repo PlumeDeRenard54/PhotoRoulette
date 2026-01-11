@@ -46,6 +46,11 @@ public class Client {
     private final Thread listener;
 
     /**
+     * le joueur a il joué à cette manche
+     */
+    private boolean aJoue;
+
+    /**
      * Constructeur
      * @param socket socket relié au client
      */
@@ -68,6 +73,7 @@ public class Client {
                      switch (message.type){
                          //Message utilisé pour rejoindre une room
                          case join :
+                             this.room.getPartie().clearLoaded();
                              Room room1 = Server.getServer().getRooms().get(message.contenu);
                              assert room1 != null;
                              room1.broadCast(new Message(MessageTypes.join,this.getNom()));
@@ -82,19 +88,28 @@ public class Client {
 
                          //REception d'une demande de lancement
                          case launch:
+                             //TODO envoi des scores
                              boolean isOkay = true;
                              for (User e : this.room.getPartie().getJoueurs().values()){
                                  isOkay = isOkay && e.isLoaded();
                              }
                              if (isOkay) {
-                                 this.room.broadCast(new Message(MessageTypes.launch, "blblblbl"));
+                                 this.room.clearAjoue();
+                                 this.room.launch();
                                  this.room.setEnCours(true);
                              }
 
-                             //TODO Gerer le deroulé de la partie
-
+                         //Notification de fin de download
                          case loaded:
                              Objects.requireNonNull(this.room.getPartie().getJoueurs().get(this.nom)).setLoaded(true);
+
+                         //Notification de jeu
+                         case play:
+                              getUser().addScore(Integer.parseInt(message.contenu));
+                              this.aJoue = true;
+                              if (this.room.tousJoue()){
+                                  this.room.launch();
+                              }
                      }
                 } catch (JSONException | IOException e) {
                     throw new RuntimeException(e);
@@ -130,5 +145,17 @@ public class Client {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public User getUser(){
+        return this.room.getPartie().getJoueurs().get(this.nom);
+    }
+
+    public void setAJoue(boolean aJoue){
+        this.aJoue = aJoue;
+    }
+
+    public boolean isaJoue() {
+        return aJoue;
     }
 }

@@ -53,10 +53,18 @@ public class Room {
         return (!this.enCours && joueurs.size()<nbJoueursMax );
     }
 
+    /**
+     * Envoie un message à tous les joueurs de la room
+     * @param message message à envoyer
+     */
     public void broadCast(Message message){
         for (Client c : joueurs.values()){
             c.send(message);
         }
+    }
+
+    public void launch(){
+        broadCast(new Message(MessageTypes.launch,"blblblbl"));
     }
 
     public Partie getPartie() {
@@ -68,4 +76,18 @@ public class Room {
     }
 
     public void setEnCours(boolean b){this.enCours=b;}
+
+    public void clearAjoue(){
+        for (Client c : joueurs.values()){
+            c.setAJoue(false);
+        }
+    }
+
+    public boolean tousJoue(){
+        boolean tmp = true;
+        for (Client c : joueurs.values()){
+            tmp = tmp && c.isaJoue();
+        }
+        return tmp;
+    }
 }

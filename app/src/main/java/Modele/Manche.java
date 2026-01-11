@@ -5,11 +5,18 @@ import android.provider.MediaStore;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+
+import Modele.Client.Client;
+import Modele.Contenu.Contenu;
+import Modele.Contenu.ContenuImage;
+import Modele.Contenu.ContenuVideo;
+
 public class Manche implements SeriJSon{
     Contenu contenu;
     User proprietaire;
     int pointMax;
-    long tickDepart;
+    LocalDateTime tickDepart;
 
     Manche(User propietaire, int pointMax) {
         this.proprietaire = propietaire;
@@ -17,36 +24,43 @@ public class Manche implements SeriJSon{
         contenu = null;
     }
 
-    Manche(User proprietaire,int pointMax,Contenu contenu,long tickDepart){
+    Manche(User proprietaire,int pointMax,Contenu contenu){
         this.proprietaire = proprietaire;
         this.pointMax = pointMax;
         this.contenu = contenu;
-        this.tickDepart = tickDepart;
     }
 
-    void setContenu(MediaStore.Images m) {
-        contenu = new ContenuImage(proprietaire, m);
-    }
-
-    void setContenu(MediaStore.Video m) {
-        contenu = new ContenuVideo(proprietaire, m);
-    }
-
-    void calculerPoint(long tickFinale, User u) {
+    /**
+     * Calcul des points
+     * @return points gagnés
+     */
+    private int calculerPoint() {
         //à revoir pour le calcul des points
-        int pointGagner = 1 / ((int) tickDepart - (int) tickFinale) * pointMax;
-        u.score += pointGagner;
+        int pointGagne = 1 / LocalDateTime.now().compareTo(tickDepart) * pointMax;
+        return pointGagne;
     }
 
-    void start() {
+    /**
+     * Methode lancée par la Partie pour lancer la manche
+     */
+    public void start() {
         // à completer
         contenu.lecture();
+        tickDepart = LocalDateTime.now();
     }
 
-    void supprimer() {
-        if (contenu != null) {
-            contenu.supprimer();
+    /**
+     * Methode a lancer lors de la validation de la réponse
+     * @param u utilisateur
+     * @param response réponse donnée
+     */
+    public void play(User u, String response){
+        int tmp = 0;
+        if (response.equals(this.proprietaire.getName())){
+            tmp = calculerPoint();
+            u.score += tmp;
         }
+        Client.getInstance().play(tmp);
     }
 
     /**
@@ -70,8 +84,15 @@ public class Manche implements SeriJSon{
             return new Manche(
                     User.fromJson(jsonObject.getJSONObject("proprietaire")),
                     jsonObject.getInt("pointMax"),
-                    Contenu.fromJson(jsonObject.getJSONObject("contenu")),
-                    jsonObject.getLong("tickDepart"));
+                    Contenu.fromJson(jsonObject.getJSONObject("contenu")));
         }catch (JSONException e){throw new RuntimeException(e);}
+    }
+
+    void setContenu(MediaStore.Images m) {
+        contenu = new ContenuImage(m);
+    }
+
+    void setContenu(MediaStore.Video m) {
+        contenu = new ContenuVideo(m);
     }
 }

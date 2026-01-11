@@ -1,4 +1,4 @@
-package Modele;
+package Modele.Contenu;
 
 import org.json.JSONException;
 import org.json.JSONObject;

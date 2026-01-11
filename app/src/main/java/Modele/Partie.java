@@ -16,6 +16,8 @@ public class Partie implements SeriJSon{
 
     int nbManches = 10 ;
 
+    int curManche = 0;
+
     public static Partie fromJson(JSONObject jsonObject){
         try {
             Partie partie = new Partie();
@@ -70,18 +72,24 @@ public class Partie implements SeriJSon{
         joueurs.remove(j.getName());
     }
 
+    /**
+     * Creation aleatoire des manches
+     */
     public void creerManches(){
-        listeManche = new ArrayList<Manche>();
+        listeManche = new ArrayList<>();
         for (int i =0; i < nbManches; i++){
-            User joueur = joueurs.get(ThreadLocalRandom.current().nextInt(0, joueurs.size()));
+            int number = ThreadLocalRandom.current().nextInt(0, joueurs.size());
+            User joueur = joueurs.get(joueurs.keySet().toArray()[number]);
             listeManche.add(new Manche(joueur,100));
         }
     }
 
+    /**
+     * Lance la prochaine manche
+     */
     public void start() {
-        for(Manche m : listeManche){
-            m.start();
-        }
+        this.listeManche.get(curManche).start();
+        curManche++;
     }
 
     public Map<String,User> getJoueurs(){return this.joueurs;}

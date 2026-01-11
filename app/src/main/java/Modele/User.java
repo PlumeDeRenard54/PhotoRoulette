@@ -57,4 +57,10 @@ public class User implements SeriJSon{
     }
 
     public String getName(){return name;}
+
+    public void resetScore(){this.score = 0;}
+
+    public void addScore(int i){this.score += i;}
+
+    public int getScore(){return score;}
 }

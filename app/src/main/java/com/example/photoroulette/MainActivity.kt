@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
                 // Créer le Builder
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("Rejoindre une partie")
-                builder.setMessage("Voulez-vous rejoindre la partie ?")
+                builder.setMessage("Saisissez le code de la partie à rejoindre")
 
                 // Inflate le layout personnalisé
                 val customLayout: View = layoutInflater.inflate(R.layout.code_party_layout, null)

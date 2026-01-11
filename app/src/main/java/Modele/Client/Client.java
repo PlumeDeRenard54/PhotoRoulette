@@ -62,7 +62,9 @@ public class Client {
 
                         switch (message.type){
                             //Traitement des messages
-                            //TODO
+                            case roomList:
+                                //TODO Affichage de la liste des rooms
+
                         }
                     } catch (JSONException | IOException e) {
                         throw new RuntimeException(e);

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:paddingLeft="48dp"
+    android:paddingRight="48dp">
 
     <EditText
         android:id="@+id/entrodePart"
         android:background="@drawable/bouton_circulaire"
-        android:backgroundTint="@color/material_dynamic_neutral80"
+        android:backgroundTint="@color/bleu_input"
         android:hint="Ex: 09112001"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
-        android:textSize="24dp"
+        android:textSize="30dp"
         android:inputType="number"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="55dp" />
 </LinearLayout>

@@ -33,28 +33,46 @@ class MainActivity : AppCompatActivity() {
             if (textPseudo.isEmpty()) {
                 Toast.makeText(this, "Veuillez saisir un prénom correct", Toast.LENGTH_SHORT).show()
             } else {
-                // Créer un AlertDialog
+                // Créer le Builder
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("Rejoindre une partie")
                 builder.setMessage("Voulez-vous rejoindre la partie ?")
 
-                // Set un layout pour l'AlertDialog
+                // Inflate le layout personnalisé
                 val customLayout: View = layoutInflater.inflate(R.layout.code_party_layout, null)
                 builder.setView(customLayout)
 
-                // ajoute un bouton "Rejoindre"
-                builder.setPositiveButton("Rejoindre") { dialog: DialogInterface?, which: Int ->
-                    // envoie le code de la partie
+                // IMPORTANT : On met le listener à 'null' ici pour éviter la fermeture automatique
+                builder.setPositiveButton("Rejoindre", null)
+                builder.setNegativeButton("Annuler") { dialog, _ -> dialog.dismiss() }
+
+                // Création du dialogue
+                val dialog = builder.create()
+
+                // Appliquer les bords ronds (assure-toi d'avoir un drawable avec une couleur de fond, ex: fond_dialogue)
+                // Si tu utilises bouton_circulaire tel quel, le fond risque d'être transparent.
+                dialog.window?.setBackgroundDrawableResource(R.drawable.font_dialogue)
+                // Conseil : utilise plutôt R.drawable.fond_dialogue créé ci-dessus si bouton_circulaire n'a pas de <solid>
+
+                dialog.show()
+
+                // On récupère le bouton APRÈS le show() et on remplace son comportement
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                     val editText: EditText = customLayout.findViewById(R.id.entrodePart)
-                    if(editText.text.toString().isEmpty()){
+                    val codePartie = editText.text.toString()
+
+                    if (codePartie.isEmpty()) {
+                        // Le code est vide/invalide : on affiche l'erreur MAIS on ne ferme pas le dialogue
                         Toast.makeText(this, "Veuillez saisir un code correct", Toast.LENGTH_SHORT).show()
                     } else {
-                    Toast.makeText(this, editText.text.toString(), Toast.LENGTH_SHORT).show()
+                        // Le code est bon : on traite et on ferme manuellement
+                        Toast.makeText(this, "Code: $codePartie", Toast.LENGTH_SHORT).show()
+
+                        // TODO: Ajouter ta logique pour rejoindre la partie ici
+
+                        dialog.dismiss()
                     }
                 }
-                // création du dialog
-                val dialog = builder.create()
-                dialog.show()
             }
         }
     }

@@ -24,14 +24,14 @@
         android:id="@+id/entrePseudo"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Entrez votre pseudo"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
         android:layout_margin="24dp"
         android:background="@drawable/bouton_circulaire"
-        android:backgroundTint="@color/material_dynamic_secondary80"
+        android:backgroundTint="@color/bleu_input"
+        android:ems="10"
+        android:hint="Entrez votre pseudo"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
         android:textSize="20dp" />
 
     <Button

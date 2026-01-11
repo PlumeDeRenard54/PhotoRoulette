@@ -97,7 +97,7 @@ public class Client {
      * @param message message a transmettre
      */
     public void send(Message message){
-        out.println(message.getJson());
+        out.println(message.toJson());
         out.flush();
     }
 

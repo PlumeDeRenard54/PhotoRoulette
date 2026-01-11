@@ -17,6 +17,13 @@ public class Manche implements SeriJSon{
         contenu = null;
     }
 
+    Manche(User proprietaire,int pointMax,Contenu contenu,long tickDepart){
+        this.proprietaire = proprietaire;
+        this.pointMax = pointMax;
+        this.contenu = contenu;
+        this.tickDepart = tickDepart;
+    }
+
     void setContenu(MediaStore.Images m) {
         contenu = new ContenuImage(proprietaire, m);
     }
@@ -55,6 +62,16 @@ public class Manche implements SeriJSon{
                     .put("proprietaire", proprietaire.toJson())
                     .put("pointMax", pointMax)
                     .put("tickeDepart", tickDepart);
+        }catch (JSONException e){throw new RuntimeException(e);}
+    }
+
+    public static Manche fromJson(JSONObject jsonObject){
+        try {
+            return new Manche(
+                    User.fromJson(jsonObject.getJSONObject("proprietaire")),
+                    jsonObject.getInt("pointMax"),
+                    Contenu.fromJson(jsonObject.getJSONObject("contenu")),
+                    jsonObject.getLong("tickDepart"));
         }catch (JSONException e){throw new RuntimeException(e);}
     }
 }

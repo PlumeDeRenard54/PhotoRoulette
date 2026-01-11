@@ -1,8 +1,8 @@
 package Modele;
 
 public interface Contenu {
+    //lancer la lecture du média
     public void lecture();
-
-    public void  setProprietaire(User p);
-
+    //suppime la video/image du serveur et de chez les utilisateurs
+    public void supprimer();
 }

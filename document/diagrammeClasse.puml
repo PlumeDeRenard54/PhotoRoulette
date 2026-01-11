@@ -10,15 +10,19 @@ package Modele {
 
     abstract class Manche {
         centenu : Contenu
+        proprietaire : User
         pointMax : int
         tickDepart : long
-        calculerPoint(tick long)
+        calculerPoint(long)
         start()
+        setContenu(MediaStore.Video)
+        setContenu(MediaStore.Images)
     }
 
     interface Contenu {
         proprietaire : User
         lecture()
+        supprimer()
     }
 
     class ContenuImage {
@@ -33,8 +37,8 @@ package Modele {
         joueurs : ArrayList<User>
         ListeManches : ArrayList<Manche
         nbManches : int
-        ajouterJoueur(j :User)
-        supprimerJoueur(j :User))
+        ajouterJoueur(User)
+        supprimerJoueur(User))
         creerManches()
         start()
     }

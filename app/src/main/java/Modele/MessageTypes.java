@@ -10,5 +10,6 @@ public enum MessageTypes {
     roomData,
     launch,
     loaded,
-    play
+    play,
+    end
 }

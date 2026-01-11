@@ -85,6 +85,7 @@ public class Client {
                          //Setting du nom
                          case setName:
                              this.nom = message.contenu;
+                             break;
 
                          //REception d'une demande de lancement
                          case launch:
@@ -98,18 +99,25 @@ public class Client {
                                  this.room.launch();
                                  this.room.setEnCours(true);
                              }
+                             break;
 
                          //Notification de fin de download
                          case loaded:
                              Objects.requireNonNull(this.room.getPartie().getJoueurs().get(this.nom)).setLoaded(true);
+                             break;
 
                          //Notification de jeu
                          case play:
                               getUser().addScore(Integer.parseInt(message.contenu));
                               this.aJoue = true;
                               if (this.room.tousJoue()){
-                                  this.room.launch();
+                                  if (this.room.getPartie().isFin()){
+                                      this.room.end();
+                                  }else {
+                                      this.room.launch();
+                                  }
                               }
+                              break;
                      }
                 } catch (JSONException | IOException e) {
                     throw new RuntimeException(e);

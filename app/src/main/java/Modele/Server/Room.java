@@ -63,9 +63,14 @@ public class Room {
         }
     }
 
-    public void launch(){
+    public synchronized void launch(){
         broadCast(new Message(MessageTypes.launch,"blblblbl"));
     }
+
+    public synchronized void end(){
+        broadCast(new Message(MessageTypes.end,this.partie.getBest().toJson().toString()));
+    }
+
 
     public Partie getPartie() {
         return partie;

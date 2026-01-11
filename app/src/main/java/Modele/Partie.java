@@ -99,4 +99,18 @@ public class Partie implements SeriJSon{
             e.setLoaded(false);
         });
     }
+
+    public User getBest(){
+        User tmp = null;
+
+        for (User u : this.joueurs.values()){
+            if (tmp == null || tmp.score<u.score) {
+                tmp = u;
+            }
+        }
+
+        return tmp;
+    }
+
+    public boolean isFin(){return this.curManche-1==this.nbManches;}
 }

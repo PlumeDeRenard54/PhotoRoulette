@@ -88,6 +88,9 @@ public class Client {
                             case launch:
                                 this.partie.start();
 
+                            case end:
+                                //TODO Gestion fin client
+
                         }
                     } catch (JSONException | IOException e) {
                         throw new RuntimeException(e);

@@ -31,7 +31,8 @@ package Modele {
 
     abstract class Partie {
         joueurs : ArrayList<User>
-        ListeManches : ArrayList<Manche>
+        ListeManches : ArrayList<Manche
+        nbManches : int
         ajouterJoueur(j :User)
         supprimerJoueur(j :User))
         creerManches()

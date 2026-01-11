@@ -18,6 +18,8 @@ public class Client {
     private final PrintWriter out;
     private final BufferedReader in;
 
+    private Room room;
+
     //Lecture des données venant du client
     private final Thread listener;
 
@@ -33,6 +35,8 @@ public class Client {
                      message = Message.fromJson(this.in.readLine());
 
                      switch (message.type){
+                         case "join" :
+
                          //Traitement des messages
                      }
                 } catch (JSONException | IOException e) {
@@ -54,4 +58,11 @@ public class Client {
     }
 
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 }

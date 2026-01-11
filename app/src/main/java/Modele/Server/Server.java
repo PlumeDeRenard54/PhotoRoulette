@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Classe singleton gerant le Server
@@ -20,9 +22,12 @@ public class Server {
 
     private volatile List<Client> socketList;
 
+    private volatile Map<String, Room> rooms;
+
     private Thread clientSearch;
 
     private Server() throws IOException {
+        this.rooms = new HashMap<>();
         this.serverSocket = new ServerSocket(45600);
         this.socketList = new ArrayList<>();
 
@@ -52,4 +57,9 @@ public class Server {
         }
         return singleton;
     }
+
+    public Map<String, Room> getRooms() {
+        return rooms;
+    }
+
 }

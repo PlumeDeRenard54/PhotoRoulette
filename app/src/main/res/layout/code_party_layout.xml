@@ -8,13 +8,11 @@
 
     <EditText
         android:id="@+id/entrodePart"
-        android:background="@drawable/bouton_circulaire"
-        android:backgroundTint="@color/bleu_input"
+        style="@style/AppEditTextStyle"
+        android:textColor="@color/black"
         android:hint="Ex: 09112001"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="30dp"
         android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="55dp" />
+
 </LinearLayout>

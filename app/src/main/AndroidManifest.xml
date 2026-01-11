@@ -14,7 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PhotoRoulette">
-
+        <activity
+            android:name=".SalonInvite"
+            android:exported="false" />
+        <activity
+            android:name=".SalonProprietaire"
+            android:exported="false" />
+        <activity
+            android:name=".LobieJoueurProprietaire"
+            android:exported="false"
+            android:theme="@style/Theme.PhotoRoulette" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -22,10 +31,10 @@
             android:theme="@style/Theme.PhotoRoulette">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

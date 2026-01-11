@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Veuillez saisir un prénom correct", Toast.LENGTH_SHORT).show()
             } else {
                 // Créer le Builder
-                val builder = AlertDialog.Builder(this)
+                val builder = AlertDialog.Builder(this, R.style.MonDialoguePerso)
                 builder.setTitle("Rejoindre une partie")
                 builder.setMessage("Saisissez le code de la partie à rejoindre")
 

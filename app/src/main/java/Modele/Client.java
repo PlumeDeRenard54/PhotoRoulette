@@ -1,4 +1,4 @@
-package Modele.Client;
+package Modele;
 
 import Modele.Message;
 import Modele.MessageTypes;
@@ -22,7 +22,7 @@ public class Client {
     /**
      * Nom/ip du server
      */
-    private static String host = "127.0.0.1";
+    private static String host = "prawnsuit.hopto.org";
 
     /**
      * Instance du Clie t
@@ -61,7 +61,7 @@ public class Client {
      */
     private Client() {
         try {
-            this.socket = new Socket(host, 45600);
+            this.socket = new Socket(host, 25565);
             this.out = new PrintWriter(socket.getOutputStream(), true);
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
@@ -161,4 +161,7 @@ public class Client {
         send(new Message(MessageTypes.play,nbPoints+""));
     }
 
+    public static void main(String[] args){
+        Client client = Client.getInstance();
+    }
 }

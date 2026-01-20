@@ -2,7 +2,7 @@ package Modele;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import Modele.Client.Client;
+import Modele.Client;
 import java.time.LocalDateTime;
 
 public class Manche implements SeriJSon {

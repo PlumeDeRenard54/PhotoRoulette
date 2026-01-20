@@ -1,6 +1,8 @@
 package com.example.photoroulette
 
+import Modele.Client
 import android.os.Bundle
+import android.os.NetworkOnMainThreadException
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -27,6 +29,32 @@ class MainActivity : AppCompatActivity() {
         val rejoindrePartie = findViewById<Button>(R.id.Rejoindre)
         val creerPartie = findViewById<Button>(R.id.CreerPartie)
 
+        Thread(object : Runnable {
+            override fun run() {
+                try {
+                    // Cela va déclencher le constructeur et donc la connexion socket
+                    val client = Client.getInstance()
+                    println("Connecté au serveur !")
+
+
+                    // Si vous avez besoin de modifier l'UI après la connexion,
+                    // n'oubliez pas de revenir sur le thread principal :
+                    // runOnUiThread(() -> { ... });
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }).start()
+
+        creerPartie.setOnClickListener {
+            try {
+                Client.getInstance().joinRoom("new");
+            } catch (e: NetworkOnMainThreadException) {
+                Toast.makeText(this, "Problème de connexion, réessayer plutard", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
         rejoindrePartie.setOnClickListener {
             val textPseudo = pseudo.text.toString()
             if (textPseudo.isEmpty()) {
@@ -41,7 +69,6 @@ class MainActivity : AppCompatActivity() {
                 val customLayout: View = layoutInflater.inflate(R.layout.code_party_layout, null)
                 builder.setView(customLayout)
 
-                // IMPORTANT : On met le listener à 'null' ici pour éviter la fermeture automatique
                 builder.setPositiveButton("Rejoindre", null)
                 builder.setNegativeButton("Annuler") { dialog, _ -> dialog.dismiss() }
 
@@ -49,27 +76,20 @@ class MainActivity : AppCompatActivity() {
                 val dialog = builder.create()
 
                 // Appliquer les bords ronds (assure-toi d'avoir un drawable avec une couleur de fond, ex: fond_dialogue)
-                // Si tu utilises bouton_circulaire tel quel, le fond risque d'être transparent.
                 dialog.window?.setBackgroundDrawableResource(R.drawable.font_dialogue)
-                // Conseil : utilise plutôt R.drawable.fond_dialogue créé ci-dessus si bouton_circulaire n'a pas de <solid>
-
                 dialog.show()
 
-                // On récupère le bouton APRÈS le show() et on remplace son comportement
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                     val editText: EditText = customLayout.findViewById(R.id.entrodePart)
                     val codePartie = editText.text.toString()
-
                     if (codePartie.isEmpty()) {
-                        // Le code est vide/invalide : on affiche l'erreur MAIS on ne ferme pas le dialogue
                         Toast.makeText(this, "Veuillez saisir un code correct", Toast.LENGTH_SHORT).show()
                     } else {
-                        // Le code est bon : on traite et on ferme manuellement
-                        Toast.makeText(this, "Code: $codePartie", Toast.LENGTH_SHORT).show()
-
-                        // TODO: Ajouter ta logique pour rejoindre la partie ici
-
-                        dialog.dismiss()
+                        try {
+                            Client.getInstance().joinRoom(codePartie);
+                        } catch (e: NetworkOnMainThreadException) {
+                            Toast.makeText(this, "Problème de connexion, réessayer plutard", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }

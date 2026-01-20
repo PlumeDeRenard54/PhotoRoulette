@@ -1,5 +1,7 @@
 package Modele;
 
+import android.widget.Toast;
+
 import Modele.Message;
 import Modele.MessageTypes;
 import Modele.Partie;
@@ -22,10 +24,10 @@ public class Client {
     /**
      * Nom/ip du server
      */
-    private static String host = "prawnsuit.hopto.org";
+    private static String host = "10.102.5.147";
 
     /**
-     * Instance du Clie t
+     * Instance du Client
      */
     private static Client singleton ;
 
@@ -57,7 +59,7 @@ public class Client {
     private String name;
 
     /**
-     * COnstructeur
+     * Constructeur
      */
     private Client() {
         try {
@@ -70,25 +72,32 @@ public class Client {
                     Message message;
                     try {
                         message = Message.fromJson(this.in.readLine());
+                        System.out.println("Message reçu : " + message.toString());
+
 
                         switch (message.type){
 
                             //Un joueur rejoint la game
                             case join:
                                 partie.ajouterJoueur(new User(message.contenu));
+                                break;
 
                             //Recuperation des données de la partie
                             case roomData:
                                 this.partie = Partie.fromJson(new JSONObject(message.contenu));
 
                                 //Envoi du message pour notifier que les données sont bien recues
-                                send(new Message(MessageTypes.loaded,"blblb"));
+                                send(new Message(MessageTypes.loaded,"Données Chargées"));
+                                break;
 
                             //lancement de la partie          ,
                             case launch:
-                                this.partie.start();
+                                //this.partie.start();
+                                System.out.println("La partie commence !");
+                                break;
 
                             case end:
+                                break;
                                 //TODO Gestion fin client
 
                         }
@@ -145,7 +154,7 @@ public class Client {
      * Si tout le monde a téléchargé les données, la partie se lance
      */
     public void launchGame(){
-        send(new Message(MessageTypes.launch,"blblblbl"));
+        send(new Message(MessageTypes.launch,"Demande de lancement"));
     }
 
     /**

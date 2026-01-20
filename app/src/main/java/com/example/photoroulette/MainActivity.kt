@@ -2,7 +2,6 @@ package com.example.photoroulette
 
 import Modele.Client
 import android.os.Bundle
-import android.os.NetworkOnMainThreadException
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -28,37 +27,47 @@ class MainActivity : AppCompatActivity() {
         val pseudo = findViewById<EditText>(R.id.entrePseudo)
         val rejoindrePartie = findViewById<Button>(R.id.Rejoindre)
         val creerPartie = findViewById<Button>(R.id.CreerPartie)
+        val textPseudo = pseudo.text.toString()
 
-        Thread(object : Runnable {
-            override fun run() {
-                try {
-                    // Cela va déclencher le constructeur et donc la connexion socket
-                    val client = Client.getInstance()
-                    println("Connecté au serveur !")
+        // Connexion initiale au serveur
+        Thread {
+            try {
+                // Cela va déclencher le constructeur et donc la connexion socket
+                val client = Client.getInstance()
+                println("Connecté au serveur !")
 
-
-                    // Si vous avez besoin de modifier l'UI après la connexion,
-                    // n'oubliez pas de revenir sur le thread principal :
-                    // runOnUiThread(() -> { ... });
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+                // Si vous avez besoin de modifier l'UI après la connexion,
+                // n'oubliez pas de revenir sur le thread principal :
+                // runOnUiThread(() -> { ... });
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-        }).start()
+        }.start()
 
         creerPartie.setOnClickListener {
-            try {
-                Client.getInstance().joinRoom("new");
-            } catch (e: NetworkOnMainThreadException) {
-                Toast.makeText(this, "Problème de connexion, réessayer plutard", Toast.LENGTH_SHORT).show()
+            if (textPseudo.isEmpty()) {
+                Toast.makeText(this, "Veuillez entrer un pseudo", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+            // CORRECTION : Lancement dans un Thread séparé pour éviter NetworkOnMainThreadException
+            Thread {
+                    try {
+                        Client.getInstance().joinRoom("new")
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        // Revenir sur le thread principal pour afficher le Toast
+                        runOnUiThread {
+                            Toast.makeText(this, "Problème de connexion", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }.start()
             }
         }
 
 
         rejoindrePartie.setOnClickListener {
-            val textPseudo = pseudo.text.toString()
             if (textPseudo.isEmpty()) {
-                Toast.makeText(this, "Veuillez saisir un prénom correct", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Veuillez entrer un pseudo", Toast.LENGTH_SHORT).show()
             } else {
                 // Créer le Builder
                 val builder = AlertDialog.Builder(this, R.style.MonDialoguePerso)
@@ -75,21 +84,32 @@ class MainActivity : AppCompatActivity() {
                 // Création du dialogue
                 val dialog = builder.create()
 
-                // Appliquer les bords ronds (assure-toi d'avoir un drawable avec une couleur de fond, ex: fond_dialogue)
+                // Appliquer les bords ronds
                 dialog.window?.setBackgroundDrawableResource(R.drawable.font_dialogue)
                 dialog.show()
 
+                // On override le listener du bouton positif pour éviter que le dialogue ne se ferme automatiquement si erreur
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                     val editText: EditText = customLayout.findViewById(R.id.entrodePart)
                     val codePartie = editText.text.toString()
+
                     if (codePartie.isEmpty()) {
                         Toast.makeText(this, "Veuillez saisir un code correct", Toast.LENGTH_SHORT).show()
                     } else {
-                        try {
-                            Client.getInstance().joinRoom(codePartie);
-                        } catch (e: NetworkOnMainThreadException) {
-                            Toast.makeText(this, "Problème de connexion, réessayer plutard", Toast.LENGTH_SHORT).show()
-                        }
+                        // CORRECTION : Lancement dans un Thread séparé
+                        Thread {
+                            try {
+                                Client.getInstance().setName(textPseudo)
+                                Client.getInstance().joinRoom(codePartie)
+                                // Optionnel : Fermer le dialogue sur le thread principal si succès
+                                runOnUiThread { dialog.dismiss() }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                runOnUiThread {
+                                    Toast.makeText(this, "Problème de connexion", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }.start()
                     }
                 }
             }

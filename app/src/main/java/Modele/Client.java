@@ -24,7 +24,7 @@ public class Client {
     /**
      * Nom/ip du server
      */
-    private static String host = "prawnsuit.hopto.org";
+    private static String host = "10.102.5.147";
 
     /**
      * Instance du Client
@@ -96,6 +96,10 @@ public class Client {
                                 System.out.println("La partie commence !");
                                 break;
 
+                            case  error:
+                                System.out.println("Erreur : " + message.contenu);
+                                break;
+
                             case end:
                                 break;
                                 //TODO Gestion fin client
@@ -142,6 +146,15 @@ public class Client {
     }
 
     /**
+     * Envoie l'instruction au server de creer une room
+     */
+    public void creatRoom(){
+        send(new Message(MessageTypes.createRoom,"69696969"));
+        joinRoom("69696969");
+    }
+
+
+    /**
      * Envoie l'instruction au server de connecter le client à la room
      * @param roomName nom /code de la room
      */
@@ -172,5 +185,9 @@ public class Client {
 
     public static void main(String[] args){
         Client client = Client.getInstance();
+    }
+
+    public Partie getPartie(){
+        return this.partie;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.photoroulette
 
 import Modele.Client
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -52,7 +53,8 @@ class MainActivity : AppCompatActivity() {
             // CORRECTION : Lancement dans un Thread séparé pour éviter NetworkOnMainThreadException
             Thread {
                     try {
-                        Client.getInstance().joinRoom("new")
+                        Client.getInstance().setName(textPseudo)
+                        Client.getInstance().creatRoom()
                     } catch (e: Exception) {
                         e.printStackTrace()
                         // Revenir sur le thread principal pour afficher le Toast
@@ -61,6 +63,8 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }.start()
+                val intent = Intent(this, SalonInvite::class.java)
+                startActivity(intent)
             }
         }
 

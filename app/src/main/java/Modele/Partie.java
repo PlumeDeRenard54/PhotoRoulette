@@ -118,4 +118,8 @@ public class Partie implements SeriJSon{
     }
 
     public boolean isFin(){return this.curManche-1==this.nbManches;}
+
+    public String getNumRoom(){
+        return this.numRoom;
+    }
 }

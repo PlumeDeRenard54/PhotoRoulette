@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         val pseudo = findViewById<EditText>(R.id.entrePseudo)
         val rejoindrePartie = findViewById<Button>(R.id.Rejoindre)
         val creerPartie = findViewById<Button>(R.id.CreerPartie)
-        val textPseudo = pseudo.text.toString()
 
         // Connexion initiale au serveur
         Thread {
@@ -45,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         }.start()
 
         creerPartie.setOnClickListener {
+            val textPseudo = pseudo.text.toString()
             if (textPseudo.isEmpty()) {
                 Toast.makeText(this, "Veuillez entrer un pseudo", Toast.LENGTH_SHORT)
                     .show()
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
 
         rejoindrePartie.setOnClickListener {
+            val textPseudo = pseudo.text.toString()
             if (textPseudo.isEmpty()) {
                 Toast.makeText(this, "Veuillez entrer un pseudo", Toast.LENGTH_SHORT).show()
             } else {

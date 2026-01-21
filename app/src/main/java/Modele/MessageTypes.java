@@ -11,5 +11,7 @@ public enum MessageTypes {
     launch,
     loaded,
     play,
-    end
+    end,
+    error,
+    createRoom
 }

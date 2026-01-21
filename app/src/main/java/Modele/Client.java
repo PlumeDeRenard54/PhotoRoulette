@@ -24,7 +24,7 @@ public class Client {
     /**
      * Nom/ip du server
      */
-    private static String host = "10.102.5.147";
+    private static String host = "prawnsuit.hopto.org";
 
     /**
      * Instance du Client

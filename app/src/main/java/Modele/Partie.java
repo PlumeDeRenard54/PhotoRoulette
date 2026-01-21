@@ -11,8 +11,11 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Partie implements SeriJSon{
+
+    public String numRoom ;
     private Map<String,User> joueurs;
     private ArrayList<Manche> listeManche;
+
 
     int nbManches = 10 ;
 
@@ -23,6 +26,8 @@ public class Partie implements SeriJSon{
             Partie partie = new Partie();
             partie.joueurs = new HashMap<>();
             partie.listeManche = new ArrayList<>();
+            partie.numRoom = jsonObject.getString("numRoom");
+
 
             JSONArray joueurs = jsonObject.getJSONArray("joueurs");
             for (int i = 0; i < joueurs.length(); i++) {

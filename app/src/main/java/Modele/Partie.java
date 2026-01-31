@@ -5,15 +5,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Partie implements SeriJSon{
 
     public String numRoom ;
-    private Map<String,User> joueurs;
+    private ArrayList<User> joueurs;
     private ArrayList<Manche> listeManche;
 
 
@@ -24,15 +21,16 @@ public class Partie implements SeriJSon{
     public static Partie fromJson(JSONObject jsonObject){
         try {
             Partie partie = new Partie();
-            partie.joueurs = new HashMap<>();
+            partie.joueurs = new ArrayList<User>();
             partie.listeManche = new ArrayList<>();
             partie.numRoom = jsonObject.getString("numRoom");
+
 
 
             JSONArray joueurs = jsonObject.getJSONArray("joueurs");
             for (int i = 0; i < joueurs.length(); i++) {
                 User u = User.fromJson(joueurs.getJSONObject(i));
-                partie.joueurs.put(u.getName(),u);
+                partie.joueurs.add(u);
             }
 
             JSONArray manches = jsonObject.getJSONArray("manches");
@@ -50,7 +48,7 @@ public class Partie implements SeriJSon{
         try {
 
             JSONArray j = new JSONArray();
-            for (User u : joueurs.values()) {
+            for (User u : joueurs) {
                 j.put(u.toJson());
             }
 
@@ -70,7 +68,7 @@ public class Partie implements SeriJSon{
     }
 
     public void ajouterJoueur(User j){
-        joueurs.put(j.getName(), j);
+        joueurs.add(j);
     }
 
     public void supprimerJoueur(User j){
@@ -84,7 +82,7 @@ public class Partie implements SeriJSon{
         listeManche = new ArrayList<>();
         for (int i =0; i < nbManches; i++){
             int number = ThreadLocalRandom.current().nextInt(0, joueurs.size());
-            User joueur = joueurs.get(joueurs.keySet().toArray()[number]);
+            User joueur = joueurs.get(number);
             listeManche.add(new Manche(joueur,100));
         }
     }
@@ -97,10 +95,10 @@ public class Partie implements SeriJSon{
         curManche++;
     }
 
-    public Map<String,User> getJoueurs(){return this.joueurs;}
+    public ArrayList<User> getJoueurs(){return this.joueurs;}
 
     public void clearLoaded(){
-        this.getJoueurs().values().forEach((e)->{
+        this.getJoueurs().forEach((e)->{
             e.setLoaded(false);
         });
     }
@@ -108,7 +106,7 @@ public class Partie implements SeriJSon{
     public User getBest(){
         User tmp = null;
 
-        for (User u : this.joueurs.values()){
+        for (User u : this.joueurs){
             if (tmp == null || tmp.score<u.score) {
                 tmp = u;
             }

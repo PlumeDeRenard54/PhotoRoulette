@@ -3,8 +3,6 @@ package Modele;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Modele.Server.Server;
-
 public class User implements SeriJSon{
 
     /**

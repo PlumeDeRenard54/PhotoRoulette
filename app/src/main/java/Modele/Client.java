@@ -1,12 +1,5 @@
 package Modele;
 
-import android.widget.Toast;
-
-import Modele.Message;
-import Modele.MessageTypes;
-import Modele.Partie;
-import Modele.User;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +17,7 @@ public class Client {
     /**
      * Nom/ip du server
      */
-    private static String host = "10.102.5.147";
+    private static String host = "135.125.102.223";
 
     /**
      * Instance du Client
@@ -59,11 +52,28 @@ public class Client {
     private String name;
 
     /**
+    *  Définir une interface pour le callback
+    */
+    public interface OnRoomLoadedListener {
+        void onLoaded(Partie partie);
+    }
+    //Stockage du listener
+    private OnRoomLoadedListener roomLoadedListener;
+
+    /**
+     * Setter pour le listener
+     */
+    public void setOnRoomLoadedListener(OnRoomLoadedListener listener) {
+        this.roomLoadedListener = listener;
+    }
+
+
+    /**
      * Constructeur
      */
     private Client() {
         try {
-            this.socket = new Socket(host, 25565);
+            this.socket = new Socket(host, 1109);
             this.out = new PrintWriter(socket.getOutputStream(), true);
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
@@ -85,9 +95,14 @@ public class Client {
                             //Recuperation des données de la partie
                             case roomData:
                                 this.partie = Partie.fromJson(new JSONObject(message.contenu));
+                                System.out.println("Partie chargée : " + this.partie.getNumRoom());
 
                                 //Envoi du message pour notifier que les données sont bien recues
                                 send(new Message(MessageTypes.loaded,"Données Chargées"));
+                                // Si quelqu'un écoute (l'activité), on le prévient !
+                                if (roomLoadedListener != null) {
+                                    roomLoadedListener.onLoaded(this.partie);
+                                }
                                 break;
 
                             //lancement de la partie          ,
@@ -113,6 +128,7 @@ public class Client {
             this.listener.start();
 
         }catch (IOException e){
+            System.out.println("Erreur de connexion");
             throw new RuntimeException();
         }
     }
@@ -149,8 +165,8 @@ public class Client {
      * Envoie l'instruction au server de creer une room
      */
     public void creatRoom(){
-        send(new Message(MessageTypes.createRoom,"69696969"));
-        joinRoom("69696969");
+        send(new Message(MessageTypes.createRoom,"696969"));
+        joinRoom("696969");
     }
 
 
